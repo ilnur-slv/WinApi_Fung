@@ -10,7 +10,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int
 	WNDCLASS wcl;
 
 	memset(&wcl,0,sizeof(WNDCLASS));
-
+ggg
 	wcl.hInstance=hThisInst;
 	wcl.lpszClassName="OurWindowClass";
 	wcl.lpfnWndProc=MyWindowFunction;

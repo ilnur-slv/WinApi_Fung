@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <string>
 #include "functions.h"
-#include "LocalVariables.h"
+#include "GameClass.h"
 
 using namespace std;
 
@@ -69,8 +69,9 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 		    SelectObject(hdcMem,hBrush);
 			Rectangle(hdcMem,0,0,Window.width(), Window.height());
 
-			Draw(One);
-			Draw(Two);
+			for(int i=0; i<Window.numberPlayer(); ++i)
+				Draw(player[i]);
+
 			Draw_Background();
 
 			Picture(ColorType(2));

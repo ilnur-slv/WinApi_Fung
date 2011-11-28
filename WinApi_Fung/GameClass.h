@@ -27,22 +27,25 @@ class HeadData;
 class Stone;
 class Nps;
 
-class Stone{
-private:
-
-public:
-
-};
 class HeadData{
 private:
 	int _height;
 	int _width;
 	int _dt;
+	int _numberPlayer;
 public:
-	HeadData(int h = 640, int w = 800, int sec = 20){ _height = h; _width = w; _dt = sec; }
+	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _height = h; _width = w; _dt = sec; _numberPlayer = nP; }
 	int height(){ return _height; }
 	int width(){ return _width; }
 	int dt(){ return _dt; }
+	int numberPlayer(){ return _numberPlayer; }
+};
+HeadData *Window;
+class Stone{
+private:
+
+public:
+
 };
 class Player{
 private:
@@ -69,7 +72,7 @@ public:
 		RightPress = Right;
 	}
 
-	void NpsInit(Nps *np){ nps = np; }
+	static void NpsInit(Nps *np){ nps = np; }
 
 	void Wind(int &_x, int &_y){
 	if(fi==0){_x=0;_y=-3;}
@@ -133,6 +136,7 @@ public:
 	int _x(){ return x; }
 	int _y(){ return y; }
 };
+Player *player;
 class Nps{
 private:
 	int x;
@@ -140,7 +144,8 @@ private:
 	int fi;
 	int v1;
 	int v2;
-	static Player *player;
+	Player *player;
+	int numberPlayer;
 public:
 	Nps(int _x = 200, int _y = 400, int _v1 = 3, Player *pl = NULL){ fi=0; v2=0; x=_x; y=_x; v1=_v1; player = pl;}
 	bool Speed(){
@@ -172,9 +177,6 @@ public:
 
 	}
 };
-
-HeadData Window;
-Player player[3] = {Player(410,320,VK_LEFT,VK_RIGHT,ColorType(0)), Player(390,320,'A','D',ColorType(1)), Player(410,320,VK_LEFT,VK_RIGHT,ColorType(0))};
-Nps *nps = new Nps(500,400,3,player);
+Nps *nps;
 
 #endif

@@ -2,9 +2,16 @@
 #define _Function_
 
 #include <windows.h>
-#include <string>
 #include "LocalVariables.h"
-#include <stdio.h>
+
+void Press(Player&);
+void Draw(Player&);
+void Draw_Background();
+void Picture(COLORREF);
+void hsv_to_rgb (int,int,int,int&,int&,int&);
+void rgb_to_hsv (int,int,int,int&,int&,int&);
+COLORREF* ValueColor(int,int,int);
+COLORREF* ColorType(int);
 
 void Press(Player &A){
 	if(A.Pr()==0){
@@ -13,17 +20,14 @@ void Press(Player &A){
 	}
 	A.Pr((A.Pr()==3)?0:A.Pr()+1);
 }
-
 void Draw(Player &A){
 	Press(A);
 	A.Draw();
 }
-
 void Draw_Background()
 {
 
 }
-
 void Picture(COLORREF *color){
 	int x=0;
 	for(int k=0; k<10; ++k)
@@ -38,7 +42,6 @@ void Picture(COLORREF *color){
 		x+=10;
 	}
 }
-
 void hsv_to_rgb ( int i_hue, int sat, int val, int &r, int &g, int &b){
 	int ii;
 	double fr, hue;
@@ -69,7 +72,6 @@ void hsv_to_rgb ( int i_hue, int sat, int val, int &r, int &g, int &b){
 		}
 	}
 }
-
 void rgb_to_hsv ( int r, int g, int b, int &hue, int &sat, int &val){
 	double h, rc, gc, bc, dmax;
 	unsigned int s, v;
@@ -120,7 +122,6 @@ void rgb_to_hsv ( int r, int g, int b, int &hue, int &sat, int &val){
 		}
 	}
 }
-
 COLORREF* ValueColor(int r, int g, int b){
 	COLORREF* color = new COLORREF[10];
 	int h,s,v;
@@ -133,7 +134,6 @@ COLORREF* ValueColor(int r, int g, int b){
 
 	return color;
 }
-
 COLORREF* ColorType(int i){	return ValueColor(r[i],g[i],b[i]); }
 
 #endif

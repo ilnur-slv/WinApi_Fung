@@ -2,15 +2,17 @@
 #include <string>
 #include "functions.h"
 #include "LocalVariables.h"
+
 using namespace std;
 
 LRESULT CALLBACK MyWindowFunction(HWND,UINT,WPARAM,LPARAM);
 
 int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int nWinMode){
 	WNDCLASS wcl;
+	player[0].NpsInit(nps);
 
 	memset(&wcl,0,sizeof(WNDCLASS));
-ggg
+
 	wcl.hInstance=hThisInst;
 	wcl.lpszClassName="OurWindowClass";
 	wcl.lpfnWndProc=MyWindowFunction;
@@ -69,7 +71,6 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 
 			Draw(One);
 			Draw(Two);
-
 			Draw_Background();
 
 			Picture(ColorType(2));

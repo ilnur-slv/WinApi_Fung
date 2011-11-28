@@ -3,15 +3,16 @@
 
 #include <windows.h>
 #include "functions.h"
-#include <string>
 #include <cmath>
 #include <math.h>
-
 // main color //
 int r[] = {170, 12  , 210, 194};
 int g[] = {35 , 222 , 5  , 170};
 int b[] = {228, 122 , 0  , 105};
 //
+
+COLORREF* ValueColor(int,int,int);
+COLORREF* ColorType(int);
 
 HDC hdc;
 PAINTSTRUCT ps;
@@ -21,9 +22,28 @@ HBITMAP hbmMem;
 HANDLE hOld;
 HBRUSH hBrush;
 
-COLORREF* ValueColor(int,int,int);
-COLORREF* ColorType(int);
+class Player;
+class HeadData;
+class Stone;
+class Nps;
 
+class Stone{
+private:
+
+public:
+
+};
+class HeadData{
+private:
+	int _height;
+	int _width;
+	int _dt;
+public:
+	HeadData(int h = 640, int w = 800, int sec = 20){ _height = h; _width = w; _dt = sec; }
+	int height(){ return _height; }
+	int width(){ return _width; }
+	int dt(){ return _dt; }
+};
 class Player{
 private:
 	COLORREF *rgb;
@@ -37,8 +57,9 @@ private:
 	int old_posy[6]; //сохраняем старые позиции игрока
 	char LeftPress;
 	char RightPress;
+	static Nps *nps;
 public:
-	Player(int xx, int yy, char Left, char Right, COLORREF *_rgb){
+	Player(int xx = 320, int yy = 400, char Left = (VK_LEFT), char Right = (VK_RIGHT), COLORREF *_rgb = ColorType(0)){
 		rgb = _rgb;
 		x = xx; y = yy;
 		wl = 3; wr = 3;
@@ -47,6 +68,8 @@ public:
 		LeftPress = Left;
 		RightPress = Right;
 	}
+
+	void NpsInit(Nps *np){ nps = np; }
 
 	void Wind(int &_x, int &_y){
 	if(fi==0){_x=0;_y=-3;}
@@ -110,34 +133,16 @@ public:
 	int _x(){ return x; }
 	int _y(){ return y; }
 };
-
-static class HeadData{
-private:
-	int _height;
-	int _width;
-	int _dt;
-public:
-	HeadData(int h = 640, int w = 800, int sec = 20){ _height = h; _width = w; _dt = sec; }
-	int height(){ return _height; }
-	int width(){ return _width; }
-	int dt(){ return _dt; }
-};
-
-class Stone{
-
-};
-
-Player One(410,320,VK_LEFT,VK_RIGHT,ColorType(0));
-Player Two(390,320,'A','D',ColorType(1));
-HeadData Window;
-
 class Nps{
+private:
 	int x;
 	int y;
 	int fi;
 	int v1;
 	int v2;
-	Nps(int _x, int _y, int _v1){ fi=0; v2=0; x=_x; y=_x; v1=_v1; }
+	static Player *player;
+public:
+	Nps(int _x = 200, int _y = 400, int _v1 = 3, Player *pl = NULL){ fi=0; v2=0; x=_x; y=_x; v1=_v1; player = pl;}
 	bool Speed(){
 		if( (v1 == 3) && (v2 == 2 || v2 == 4 || v2 == 6) ){ v2 = (v2 == 6)?0:v2+1; return false; }
 		if( (v1 == 4) && (v2 == 3 || v2 == 6) ){ v2 = (v2 == 6)?0:v2+1; return false; }
@@ -164,19 +169,12 @@ class Nps{
 		if(fi==15){_x=1;_y=-3;}
 	}
 	void Rotate(){
-		double q,w,min;
-		int buf;
-		w = sqrt(pow((double)x-Two._x(), 2) + pow((double)y-Two._y(), 2));
-		q = sqrt(pow((double)x-One._x(), 2) + pow((double)y-One._y(), 2));
-		if (w <= q && w < 50){
-
-		}
-
-		if (q <= w && q < 50){
-
-		}
 
 	}
 };
+
+HeadData Window;
+Player player[3] = {Player(410,320,VK_LEFT,VK_RIGHT,ColorType(0)), Player(390,320,'A','D',ColorType(1)), Player(410,320,VK_LEFT,VK_RIGHT,ColorType(0))};
+Nps *nps = new Nps(500,400,3,player);
 
 #endif

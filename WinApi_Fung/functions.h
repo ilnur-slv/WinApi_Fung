@@ -2,7 +2,7 @@
 #define _Function_
 
 #include <windows.h>
-#include "LocalVariables.h"
+#include "GameClass.h"
 
 void Press(Player&);
 void Draw(Player&);

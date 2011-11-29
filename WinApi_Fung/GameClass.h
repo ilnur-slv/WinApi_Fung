@@ -2,7 +2,6 @@
 #define _LocalV_
 
 #include <windows.h>
-#include "functions.h"
 #include <cmath>
 #include <math.h>
 // main color //
@@ -40,7 +39,6 @@ public:
 	int dt(){ return _dt; }
 	int numberPlayer(){ return _numberPlayer; }
 };
-HeadData *Window;
 class Stone{
 private:
 
@@ -60,9 +58,9 @@ private:
 	int old_posy[6]; //сохраняем старые позиции игрока
 	char LeftPress;
 	char RightPress;
-	static Nps *nps;
+	Nps *nps;
 public:
-	Player(int xx = 320, int yy = 400, char Left = (VK_LEFT), char Right = (VK_RIGHT), COLORREF *_rgb = ColorType(0)){
+	Player(int xx = 320, int yy = 400, char Left = (VK_LEFT), char Right = (VK_RIGHT), COLORREF *_rgb = ColorType(0), Nps *np = NULL){
 		rgb = _rgb;
 		x = xx; y = yy;
 		wl = 3; wr = 3;
@@ -70,9 +68,8 @@ public:
 		fi = 0;
 		LeftPress = Left;
 		RightPress = Right;
+		nps = np;
 	}
-
-	static void NpsInit(Nps *np){ nps = np; }
 
 	void Wind(int &_x, int &_y){
 	if(fi==0){_x=0;_y=-3;}
@@ -136,7 +133,6 @@ public:
 	int _x(){ return x; }
 	int _y(){ return y; }
 };
-Player *player;
 class Nps{
 private:
 	int x;
@@ -177,6 +173,11 @@ public:
 
 	}
 };
+
+// Создаем обьекты
+HeadData Window(640,800,20,3);
+Player *player;
 Nps *nps;
+//
 
 #endif

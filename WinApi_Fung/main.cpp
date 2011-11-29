@@ -1,16 +1,22 @@
 #include <windows.h>
 #include <string>
-#include "functions.h"
 #include "GameClass.h"
+#include "functions.h"
 
 using namespace std;
 
 LRESULT CALLBACK MyWindowFunction(HWND,UINT,WPARAM,LPARAM);
 
 int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int nWinMode){
-	WNDCLASS wcl;
-	player[0].NpsInit(nps);
+	// Создаем игрока и декорации
+	player = new Player[3];
+	player[0] = Player(410,320,VK_LEFT,VK_RIGHT,ColorType(0),nps);
+	player[1] = Player(390,320,'A','D',ColorType(1),nps);
+	player[2] = Player(400,320,'J','L',ColorType(2),nps);
+	nps = new Nps(500,400,3,player);
+	//
 
+	WNDCLASS wcl;
 	memset(&wcl,0,sizeof(WNDCLASS));
 
 	wcl.hInstance=hThisInst;

@@ -13,7 +13,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int
 	player[0] = Player(410,320,VK_LEFT,VK_RIGHT,ColorType(0),nps);
 	player[1] = Player(390,320,'A','D',ColorType(1),nps);
 	player[2] = Player(400,320,'J','L',ColorType(2),nps);
-	nps = new Nps(500,400,3,player);
+	nps = new Nps(500,400,3,player,ColorType(3));
 	//
 
 	WNDCLASS wcl;
@@ -77,6 +77,7 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 
 			for(int i=0; i<Window.numberPlayer(); ++i)
 				Draw(player[i]);
+			nps->Draw();
 
 			Draw_Background();
 

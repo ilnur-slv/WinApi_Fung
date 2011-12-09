@@ -1,7 +1,7 @@
 #include <windows.h>
 #include "GameClass.h"
 #include "functions.h"
-#include <string.h>
+#include <string>
 using namespace std;
 
 LRESULT CALLBACK MyWindowFunction(HWND,UINT,WPARAM,LPARAM);
@@ -82,7 +82,14 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 
 			SetBkMode(hdcMem,TRANSPARENT);
 			SetTextColor(hdcMem,RGB(r[1],g[1],b[1]));
-			TextOut(hdcMem,0,0,"Hello World",10);
+			string stri;
+			stri[0] = (char(rand()%100));
+			stri[1] = NULL;
+			TextOut(hdcMem,0,0,stri.c_str(),10);
+
+			SetBkMode(hdcMem,TRANSPARENT);
+			SetTextColor(hdcMem,RGB(r[rand()%3],g[rand()%3],b[rand()%3]));
+			TextOut(hdcMem,400,0,"Hello World",10);
 
 			BitBlt(hdc, 0, 0, Window.width(), Window.height(), hdcMem, 0, 0, SRCCOPY);
 

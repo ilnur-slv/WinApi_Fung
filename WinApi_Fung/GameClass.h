@@ -4,7 +4,9 @@
 #include <windows.h>
 #include <cmath>
 #include <math.h>
+#include <iostream>
 #include <string>
+using namespace std;
 // main color //
 int r[] = {170, 12  , 210, 194};
 int g[] = {35 , 222 , 5  , 170};
@@ -34,11 +36,14 @@ private:
 	int _dt;
 	int _numberPlayer;
 public:
-	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _height = h; _width = w; _dt = sec; _numberPlayer = nP; }
+	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _height = h; _width = w; _dt = sec; _numberPlayer = nP; score1=0; score2=0; score3=0;}
 	int height(){ return _height; }
 	int width(){ return _width; }
 	int dt(){ return _dt; }
 	int numberPlayer(){ return _numberPlayer; }
+	int score1;
+	int score2;
+	int score3;
 };
 
 // Создаем обьекты
@@ -187,12 +192,12 @@ public:
 		int fip, fiu, w=-1, k=0; // w=l if w=0
 		for(int i=1; i<Window.numberPlayer(); ++i)
 			if( met(player[i]._x(),x,player[i]._y(),y) < met(player[k]._x(),x,player[k]._y(),y) ) k=i;
-		if(buf != k){ Beep(32000, 50); buf = k; }
 
-		SetBkMode(hdcMem,TRANSPARENT);
-		SetTextColor(hdcMem,RGB(r[k],g[k],b[k]));
-		string str = "6";
-		TextOut(hdcMem,400,0,str,10);
+			/*SetBkMode(hdcMem,TRANSPARENT);
+			SetTextColor(hdcMem,RGB(r[k],g[k],b[k]));
+			char str[2];
+			itoa(k,str,10);
+			TextOut(hdcMem,400,0,str,10);*/
 
 		fip = player[k]._fi();
 		if( fip >=8 && fip <= 15 ) fiu = fip - 8;

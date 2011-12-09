@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <cmath>
 #include <math.h>
+#include <string>
 // main color //
 int r[] = {170, 12  , 210, 194};
 int g[] = {35 , 222 , 5  , 170};
@@ -150,13 +151,15 @@ private:
 	int v2;
 	Player *player;
 	int numberPlayer;
+	int buf;
 public:
-	Nps(int _x = 200, int _y = 400, int _v1 = 3, Player *pl = NULL,COLORREF *_rgb = NULL){ fi=4; v2=0; x=_x; y=_x; v1=_v1; player = pl; rgb = _rgb;}
+	Nps(int _x = 200, int _y = 400, int _v1 = 3, Player *pl = NULL,COLORREF *_rgb = NULL){ fi=4; v2=0; x=_x; y=_x; v1=_v1; player = pl; rgb = _rgb; buf=0;}
 	bool Speed(){
 		if( (v1 == 3) && (v2 == 2 || v2 == 4 || v2 == 6) ){ v2 = (v2 == 6)?0:v2+1; return false; }
 		if( (v1 == 4) && (v2 == 3 || v2 == 6) ){ v2 = (v2 == 6)?0:v2+1; return false; }
 		if( (v1 == 5) && (v2 == 4) ){ v2 = (v2 == 6)?0:v2+1; return false; }
 		if( (v1 == 6) ) return true;
+		v2 = (v2 == 6)?0:v2+1;
 		return true;
 	}
 	void Wind(int &_x, int &_y){
@@ -184,6 +187,13 @@ public:
 		int fip, fiu, w=-1, k=0; // w=l if w=0
 		for(int i=1; i<Window.numberPlayer(); ++i)
 			if( met(player[i]._x(),x,player[i]._y(),y) < met(player[k]._x(),x,player[k]._y(),y) ) k=i;
+		if(buf != k){ Beep(32000, 50); buf = k; }
+
+		SetBkMode(hdcMem,TRANSPARENT);
+		SetTextColor(hdcMem,RGB(r[k],g[k],b[k]));
+		string str = "6";
+		TextOut(hdcMem,400,0,str,10);
+
 		fip = player[k]._fi();
 		if( fip >=8 && fip <= 15 ) fiu = fip - 8;
 		if( fip >=0 && fip <= 7 ) fiu = fip + 8;
@@ -197,19 +207,22 @@ public:
 			if( fi >= 8 ) w = 0; else w = 1;
 		}
 
-		if( w==0 ) fi = ( fi==15 )? 0 : fi+1;
-		if( w==1 ) fi = ( fi==0 )? 15 : fi-1;
+		if( w==0 ) fi = ( fi==0 )? 15 : fi-1;
+		if( w==1 ) fi = ( fi==15 )? 0 : fi+1;
 	}
 	void Draw(){
-		int _x,_y;
-		Rotate();
-		Wind(_x,_y);
-		x+=_x;
-		y+=_y;
-		if(x>800) x=0;
-		if(y>640) y=0;
-		if(x<0) x=800;
-		if(y<0) y=640;
+		if (Speed()) 
+		{
+			int _x,_y;
+			Rotate();
+			Wind(_x,_y);
+			x+=_x;
+			y+=_y;
+			if(x>800) x=0;
+			if(y>640) y=0;
+			if(x<0) x=800;
+			if(y<0) y=640;
+		}
 
 		for(int i=0; i<8; ++i)
 		{
@@ -218,6 +231,7 @@ public:
 			Arc(hdcMem,x-i,y-i,x+i,y+i,0,0,0,0);
 			DeleteObject(hPen);
 		}
+
 	}
 };
 

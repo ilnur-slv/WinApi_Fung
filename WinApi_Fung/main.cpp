@@ -1,8 +1,7 @@
 #include <windows.h>
-#include <string>
 #include "GameClass.h"
 #include "functions.h"
-
+#include <string.h>
 using namespace std;
 
 LRESULT CALLBACK MyWindowFunction(HWND,UINT,WPARAM,LPARAM);
@@ -13,7 +12,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int
 	player[0] = Player(410,320,VK_LEFT,VK_RIGHT,ColorType(0),nps);
 	player[1] = Player(390,320,'A','D',ColorType(1),nps);
 	player[2] = Player(400,320,'J','L',ColorType(2),nps);
-	nps = new Nps(500,400,3,player,ColorType(3));
+	nps = new Nps(500,400,5,player,ColorType(3));
 	//
 
 	WNDCLASS wcl;
@@ -81,7 +80,9 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 
 			Draw_Background();
 
-			Picture(ColorType(2));
+			SetBkMode(hdcMem,TRANSPARENT);
+			SetTextColor(hdcMem,RGB(r[1],g[1],b[1]));
+			TextOut(hdcMem,0,0,"Hello World",10);
 
 			BitBlt(hdc, 0, 0, Window.width(), Window.height(), hdcMem, 0, 0, SRCCOPY);
 

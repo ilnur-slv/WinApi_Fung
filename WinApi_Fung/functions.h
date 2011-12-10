@@ -2,7 +2,10 @@
 #define _Function_
 
 #include <windows.h>
+#include <iostream>
+#include <string>
 #include "GameClass.h"
+using namespace std;
 
 void Press(Player&);
 void Draw(Player&);
@@ -12,8 +15,10 @@ void hsv_to_rgb (int,int,int,int&,int&,int&);
 void rgb_to_hsv (int,int,int,int&,int&,int&);
 COLORREF* ValueColor(int,int,int);
 COLORREF* ColorType(int);
-LPCSTR itos(int);
+string itos(int);
 int ilength(int);
+void PrintText(int,int,string,int);
+
 
 void Press(Player &A){
 	if(A.Pr()==0){
@@ -137,13 +142,12 @@ COLORREF* ValueColor(int r, int g, int b){
 	return color;
 }
 COLORREF* ColorType(int i){	return ValueColor(r[i],g[i],b[i]); }
-LPCSTR itos(int x){
-	LPCSTR buf;
-	char str[10];
-	itoa(x,str,10);
-	for(int i=0; i<10; ++i) if(str[i] <'0' || str[i]>'9') str[i] = '/0';
-	buf = str;
-	return buf;
+string itos(int x){
+	string str;
+	char c[10];
+	itoa(x,c,10);
+	str = c;
+	return str;
 }
 int ilength(int x){
 	if(x<10) return 1;
@@ -153,6 +157,11 @@ int ilength(int x){
 	if(x<100000) return 5;
 	if(x<1000000) return 6;
 	return 0;
+}
+void PrintText(int x,int y,string str,int colorr){
+	SetBkMode(hdcMem,TRANSPARENT);
+	SetTextColor(hdcMem,RGB(r[colorr],g[colorr],b[colorr]));
+	TextOut(hdcMem,x,y,str.c_str(),str.length());
 }
 
 #endif

@@ -12,6 +12,8 @@ void hsv_to_rgb (int,int,int,int&,int&,int&);
 void rgb_to_hsv (int,int,int,int&,int&,int&);
 COLORREF* ValueColor(int,int,int);
 COLORREF* ColorType(int);
+LPCSTR itos(int);
+int ilength(int);
 
 void Press(Player &A){
 	if(A.Pr()==0){
@@ -135,5 +137,22 @@ COLORREF* ValueColor(int r, int g, int b){
 	return color;
 }
 COLORREF* ColorType(int i){	return ValueColor(r[i],g[i],b[i]); }
+LPCSTR itos(int x){
+	LPCSTR buf;
+	char str[10];
+	itoa(x,str,10);
+	for(int i=0; i<10; ++i) if(str[i] <'0' || str[i]>'9') str[i] = '/0';
+	buf = str;
+	return buf;
+}
+int ilength(int x){
+	if(x<10) return 1;
+	if(x<100) return 2;
+	if(x<1000) return 3;
+	if(x<10000) return 4;
+	if(x<100000) return 5;
+	if(x<1000000) return 6;
+	return 0;
+}
 
 #endif

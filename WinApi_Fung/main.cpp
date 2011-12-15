@@ -13,6 +13,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int
 	player[1] = Player(390,320,'A','D',ColorType(1),nps);
 	player[2] = Player(400,320,'J','L',ColorType(2),nps);
 	nps = new Nps(500,400,5,player,ColorType(3));
+	Window.menu(1);
 	//
 
 	WNDCLASS wcl;
@@ -75,13 +76,16 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 			Rectangle(hdcMem,0,0,Window.width(), Window.height());
 
 			//--Рисуем игру--
-			for(int i=0; i<Window.numberPlayer(); ++i)
-			{
-				Draw(player[i]);
-				PrintText(5,5+i*15,itos(Window.scPrint(i)),i);
+			if(GetAsyncKeyState('S')){Window.menu((Window.menu()==1)?0:1);Sleep(100);}
+			if(Window.menu() == 0){
+				for(int i=0; i<Window.numberPlayer(); ++i)
+				{
+					Draw(player[i]);
+					PrintText(5,5+i*15,itos(Window.scPrint(i)),i);
+				}
+				nps->Draw();
+				Draw_Background();
 			}
-			nps->Draw();
-			Draw_Background();
 			//---------------
 			BitBlt(hdc, 0, 0, Window.width(), Window.height(), hdcMem, 0, 0, SRCCOPY);
 

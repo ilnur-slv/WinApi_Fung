@@ -38,14 +38,17 @@ private:
 	int _dt;
 	int _numberPlayer;
 	int _sc[3];
+	int _menu;
 public:
-	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _height = h; _width = w; _dt = sec; _numberPlayer = nP; _sc[1]=0; _sc[2]=0; _sc[3]=0;}
+	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _menu=1;_height = h; _width = w; _dt = sec; _numberPlayer = nP; _sc[1]=0; _sc[2]=0; _sc[3]=0;}
 	int height(){ return _height; }
 	int width(){ return _width; }
 	int dt(){ return _dt; }
 	int numberPlayer(){ return _numberPlayer; }
 	void sc(int x){_sc[x] = _sc[x] + 1;}
-	int scPrint(int x){return _sc[x];};
+	int scPrint(int x){return _sc[x];}
+	void valPlayer(int x){_numberPlayer = x;}
+	int menu(int x = -1){ if( x != -1 ) _menu = x; return _menu;}
 };
 
 // Создаем обьекты

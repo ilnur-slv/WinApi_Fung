@@ -15,6 +15,8 @@ int b[] = {228, 122 , 0  , 105};
 
 COLORREF* ValueColor(int,int,int);
 COLORREF* ColorType(int);
+void PrintText(int,int,string,int);
+string itos(int);
 
 HDC hdc;
 PAINTSTRUCT ps;
@@ -35,15 +37,18 @@ private:
 	int _width;
 	int _dt;
 	int _numberPlayer;
+	int _sc1;
+	int _sc2;
+	int _sc3;
 public:
-	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _height = h; _width = w; _dt = sec; _numberPlayer = nP; score1=0; score2=0; score3=0;}
+	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _height = h; _width = w; _dt = sec; _numberPlayer = nP; _sc1=0; _sc2=0; _sc3=0;}
 	int height(){ return _height; }
 	int width(){ return _width; }
 	int dt(){ return _dt; }
 	int numberPlayer(){ return _numberPlayer; }
-	int score1;
-	int score2;
-	int score3;
+	int sc1(int x=-1){if( x != -1 ) _sc1 = x; return _sc1;};
+	int sc2(int x=-1){if( x != -1 ) _sc2 = x; return _sc2;};
+	int sc3(int x=-1){if( x != -1 ) _sc3 = x; return _sc3;};
 };
 
 // Создаем обьекты
@@ -158,7 +163,7 @@ private:
 	int numberPlayer;
 	int buf;
 public:
-	Nps(int _x = 200, int _y = 400, int _v1 = 3, Player *pl = NULL,COLORREF *_rgb = NULL){ fi=4; v2=0; x=_x; y=_x; v1=_v1; player = pl; rgb = _rgb; buf=0;}
+	Nps(int _x = 200, int _y = 400, int _v1 = 3, Player *pl = NULL,COLORREF *_rgb = NULL){ fi=15; v2=0; x=_x; y=_x; v1=_v1; player = pl; rgb = _rgb; buf=0;}
 	bool Speed(){
 		if( (v1 == 3) && (v2 == 2 || v2 == 4 || v2 == 6) ){ v2 = (v2 == 6)?0:v2+1; return false; }
 		if( (v1 == 4) && (v2 == 3 || v2 == 6) ){ v2 = (v2 == 6)?0:v2+1; return false; }
@@ -193,27 +198,21 @@ public:
 		for(int i=1; i<Window.numberPlayer(); ++i)
 			if( met(player[i]._x(),x,player[i]._y(),y) < met(player[k]._x(),x,player[k]._y(),y) ) k=i;
 
-			/*SetBkMode(hdcMem,TRANSPARENT);
-			SetTextColor(hdcMem,RGB(r[k],g[k],b[k]));
-			char str[2];
-			itoa(k,str,10);
-			TextOut(hdcMem,400,0,str,10);*/
-
 		fip = player[k]._fi();
-		if( fip >=8 && fip <= 15 ) fiu = fip - 8;
-		if( fip >=0 && fip <= 7 ) fiu = fip + 8;
+		if( fip >=8 && fip <= 15 ){ fiu = fip - 8; } else { fiu = fip + 8; }
 
 		if( fi > fiu )
-		{
-			if( fi <= 8 ) w = 1; else w = 0;
-		}
+			if( fiu <= 8 ) w = 1; else w = 0;
 		if( fi < fiu )
-		{
-			if( fi >= 8 ) w = 0; else w = 1;
-		}
+			if( fiu >= 8 ) w = 0; else w = 1;
 
 		if( w==0 ) fi = ( fi==0 )? 15 : fi-1;
 		if( w==1 ) fi = ( fi==15 )? 0 : fi+1;
+
+		PrintText(0,10,itos(player[k]._x()),k);
+		PrintText(0,20,itos(player[k]._y()),k);
+		PrintText(0,30,itos(player[k]._fi()),k);
+		PrintText(0,40,itos(fi),k);
 	}
 	void Draw(){
 		if (Speed()) 

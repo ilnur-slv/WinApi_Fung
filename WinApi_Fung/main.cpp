@@ -78,10 +78,11 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 				Draw(player[i]);
 			nps->Draw();
 
-			Draw_Background();
+			PrintText(150,5,itos(Window.sc1()),0);
+			PrintText(400,5,itos(Window.sc2()),1);
+			PrintText(650,5,itos(Window.sc3()),2);
 
-			PrintText(0,200,"haha-hoho-hehe",rand()%2);
-			PrintText(400,0,"Hello World",rand()%3);
+			Draw_Background();
 
 			BitBlt(hdc, 0, 0, Window.width(), Window.height(), hdcMem, 0, 0, SRCCOPY);
 

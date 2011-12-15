@@ -37,18 +37,15 @@ private:
 	int _width;
 	int _dt;
 	int _numberPlayer;
-	int _sc1;
-	int _sc2;
-	int _sc3;
+	int _sc[3];
 public:
-	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _height = h; _width = w; _dt = sec; _numberPlayer = nP; _sc1=0; _sc2=0; _sc3=0;}
+	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _height = h; _width = w; _dt = sec; _numberPlayer = nP; _sc[1]=0; _sc[2]=0; _sc[3]=0;}
 	int height(){ return _height; }
 	int width(){ return _width; }
 	int dt(){ return _dt; }
 	int numberPlayer(){ return _numberPlayer; }
-	int sc1(int x=-1){if( x != -1 ) _sc1 = x; return _sc1;};
-	int sc2(int x=-1){if( x != -1 ) _sc2 = x; return _sc2;};
-	int sc3(int x=-1){if( x != -1 ) _sc3 = x; return _sc3;};
+	void sc(int x){_sc[x] = _sc[x] + 1;}
+	int scPrint(int x){return _sc[x];};
 };
 
 // Создаем обьекты
@@ -133,10 +130,10 @@ public:
 		old_posx[0] = x;
 		old_posy[0] = y;
 
-		if(x>800) x=0;
-		if(y>640) y=0;
-		if(x<0) x=800;
-		if(y<0) y=640;
+		if(x>Window.width()) x=0;
+		if(y>Window.height()) y=0;
+		if(x<0) x=Window.width();
+		if(y<0) y=Window.height();
 
 		for(int k=5; k>=0; --k)
 		for(int i=0; i<6-k; ++i)
@@ -208,24 +205,32 @@ public:
 
 		if( w==0 ) fi = ( fi==0 )? 15 : fi-1;
 		if( w==1 ) fi = ( fi==15 )? 0 : fi+1;
-
-		PrintText(0,10,itos(player[k]._x()),k);
-		PrintText(0,20,itos(player[k]._y()),k);
-		PrintText(0,30,itos(player[k]._fi()),k);
-		PrintText(0,40,itos(fi),k);
 	}
 	void Draw(){
+		if (Joint() == 1) {
+			x = rand()%Window.width();
+			y = rand()%Window.height();
+			fi = 0;
+		}
+
 		if (Speed()) 
 		{
 			int _x,_y;
-			Rotate();
+
+			if(buf == 1){
+				buf = 2;
+				Rotate();
+			}
+			else 
+				buf = (buf==4)?buf=0:buf+1;
+
 			Wind(_x,_y);
 			x+=_x;
 			y+=_y;
-			if(x>800) x=0;
-			if(y>640) y=0;
-			if(x<0) x=800;
-			if(y<0) y=640;
+			if(x>Window.width()) x=0;
+			if(y>Window.height()) y=0;
+			if(x<0) x=Window.width();
+			if(y<0) y=Window.height();
 		}
 
 		for(int i=0; i<8; ++i)
@@ -236,6 +241,15 @@ public:
 			DeleteObject(hPen);
 		}
 
+	}
+	int Joint(){
+		for(int k=0; k < Window.numberPlayer();++k){
+			if( met(player[k]._x(),x,player[k]._y(),y) <= 8 ){
+				Window.sc(k);
+				return 1;
+			}
+		}
+		return 0;
 	}
 };
 

@@ -33,8 +33,8 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int
 		"Simple Window",
 		WS_OVERLAPPEDWINDOW,
 		0,0,
-		800,
-		640,
+		Window.width(),
+		Window.height(),
 		HWND_DESKTOP,
 		NULL,
 		hThisInst,
@@ -74,16 +74,15 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 		    SelectObject(hdcMem,hBrush);
 			Rectangle(hdcMem,0,0,Window.width(), Window.height());
 
+			//--Рисуем игру--
 			for(int i=0; i<Window.numberPlayer(); ++i)
+			{
 				Draw(player[i]);
+				PrintText(5,5+i*15,itos(Window.scPrint(i)),i);
+			}
 			nps->Draw();
-
-			PrintText(150,5,itos(Window.sc1()),0);
-			PrintText(400,5,itos(Window.sc2()),1);
-			PrintText(650,5,itos(Window.sc3()),2);
-
 			Draw_Background();
-
+			//---------------
 			BitBlt(hdc, 0, 0, Window.width(), Window.height(), hdcMem, 0, 0, SRCCOPY);
 
 			Sleep(Window.dt());

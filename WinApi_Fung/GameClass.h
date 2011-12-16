@@ -63,6 +63,7 @@ Player *player;
 Nps *nps;
 bool bg = false;
 bool visit = false;
+unsigned long time = GetTickCount();
 //
 
 class Stone{

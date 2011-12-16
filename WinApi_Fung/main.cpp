@@ -128,9 +128,14 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 			break;
 		case WM_PAINT:
 			//--Обработчик добавления Nps--
-			if(GetAsyncKeyState(107)){
+			if(GetAsyncKeyState(107) && Window.numberNps()<100 && GetTickCount()-time > 250){
+				time = GetTickCount();
 				nps[Window.numberNps()] = Nps(rand()%800,rand()%640,5,player,ColorType(3));
 				Window.numberNps(Window.numberNps()+1);
+			}
+			if(GetAsyncKeyState(109) && Window.numberNps()>1 && GetTickCount()-time > 250){
+				time = GetTickCount();
+				Window.numberNps(Window.numberNps()-1);
 			}
 			//-----------------------------
 			//--Рисуем игру--

@@ -55,6 +55,8 @@ public:
 HeadData Window(640,800,20,3);
 Player *player;
 Nps *nps;
+bool bg = false;
+bool visit = false;
 //
 
 class Stone{
@@ -66,6 +68,8 @@ public:
 class Player{
 private:
 	COLORREF *rgb;
+	int restore_x;
+	int restore_y;
 	int x;
 	int y;
 	int wl;
@@ -81,6 +85,8 @@ public:
 	Player(int xx = 320, int yy = 400, char Left = (VK_LEFT), char Right = (VK_RIGHT), COLORREF *_rgb = ColorType(0), Nps *np = NULL){
 		rgb = _rgb;
 		x = xx; y = yy;
+		restore_x = xx;
+		restore_y = yy;
 		wl = 3; wr = 3;
 		pr = 0;
 		fi = 0;
@@ -89,6 +95,13 @@ public:
 		nps = np;
 	}
 
+	void Restore(){
+		x = restore_x;
+		y = restore_y;
+		wl = 3; wr = 3;
+		pr = 0;
+		fi = 0;
+	}
 	void Wind(int &_x, int &_y){
 	if(fi==0){_x=0;_y=-3;}
 	if(fi==1){_x=-1;_y=-3;}
@@ -154,6 +167,8 @@ public:
 class Nps{
 private:
 	COLORREF *rgb;
+	int restore_x;
+	int restore_y;
 	int x;
 	int y;
 	int fi;
@@ -163,7 +178,25 @@ private:
 	int numberPlayer;
 	int buf;
 public:
-	Nps(int _x = 200, int _y = 400, int _v1 = 3, Player *pl = NULL,COLORREF *_rgb = NULL){ fi=15; v2=0; x=_x; y=_x; v1=_v1; player = pl; rgb = _rgb; buf=0;}
+	Nps(int _x = 200, int _y = 400, int _v1 = 3, Player *pl = NULL,COLORREF *_rgb = NULL){ 
+		fi=15; 
+		v2=0; 
+		x=_x; 
+		y=_x;
+		restore_x = x;
+		restore_y = y;
+		v1=_v1; 
+		player = pl; 
+		rgb = _rgb; 
+		buf=0;
+	}
+	void Restore(){
+		fi=15; 
+		v2=0; 
+		x = restore_x;
+		y = restore_y;
+		buf = 0;
+	}
 	bool Speed(){
 		if( (v1 == 3) && (v2 == 2 || v2 == 4 || v2 == 6) ){ v2 = (v2 == 6)?0:v2+1; return false; }
 		if( (v1 == 4) && (v2 == 3 || v2 == 6) ){ v2 = (v2 == 6)?0:v2+1; return false; }

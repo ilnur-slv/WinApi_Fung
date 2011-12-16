@@ -36,7 +36,8 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int
 	wcl.hCursor=LoadCursor(NULL, IDC_ARROW);
 	wcl.lpszMenuName=NULL;
 
-	wcl.hbrBackground=0;
+	wcl.hbrBackground = 0;
+
 	if(!RegisterClass(&wcl)){return 0;}
 
 	HWND hwnd=CreateWindow("OurWindowClass",
@@ -97,12 +98,18 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 				if(idButton == IDC_B6){
 					Window.menu(1);
 					/*Обнуление*/
+					for(int i=0; i<Window.numberPlayer(); ++i)
+					{
+						player[i].Restore();
+					}
+					nps->Restore();
+					/**/
 					ShowWindow(hButton1,SW_SHOW);
 					ShowWindow(hButton2,SW_SHOW);
 					ShowWindow(hButton3,SW_SHOW);
 					ShowWindow(hButton5,SW_HIDE);
 					ShowWindow(hButton6,SW_HIDE);
-					/*Заливка черным*/
+					bg = true;
 					UpdateWindow(hwnd);
 				}
 				break;
@@ -115,8 +122,6 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 		case BN_CLICKED:
 			break;
 		case WM_PAINT:
-			/*Заливка черным*/
-
 			//--Рисуем игру--
 			if(GetAsyncKeyState(27)){
 				Window.menu(1);
@@ -129,6 +134,15 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 					UpdateWindow(hwnd);
 				}
 			}
+			if(Window.menu() == 1 && visit == false || bg == true){
+				hdc=BeginPaint(hwnd, &ps);
+				hBrush=CreateSolidBrush(RGB(0,0,0));
+				SelectObject(hdc,hBrush);
+				Rectangle(hdc,0,0,Window.width(), Window.height());
+				visit = true;
+				bg = false;
+				InvalidateRect(hwnd,NULL,1);
+			}
 			if(Window.menu() == 0){
 
 				hdc=BeginPaint(hwnd, &ps);
@@ -137,7 +151,7 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 				hOld   = SelectObject(hdcMem, hbmMem);
 				hBrush=CreateSolidBrush(RGB(0,0,0));
 				SelectObject(hdcMem,hBrush);
-			
+
 				Rectangle(hdcMem,0,0,Window.width(), Window.height());
 
 				for(int i=0; i<Window.numberPlayer(); ++i)

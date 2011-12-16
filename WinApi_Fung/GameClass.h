@@ -39,12 +39,18 @@ private:
 	int _numberPlayer;
 	int _sc[3];
 	int _menu;
+	int _numberNps;
 public:
-	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _menu=1;_height = h; _width = w; _dt = sec; _numberPlayer = nP; _sc[1]=0; _sc[2]=0; _sc[3]=0;}
+	HeadData(int h = 640, int w = 800, int sec = 20, int nP=1){ _menu=1;_height = h; _width = w; _dt = sec; _numberPlayer = nP; _sc[0]=0; _sc[1]=0; _sc[2]=0; _numberNps = 1;}
+	void Restore(){
+		_sc[1]=0; _sc[2]=0; _sc[0]=0;
+		_numberNps = 1;
+	}
 	int height(){ return _height; }
 	int width(){ return _width; }
 	int dt(){ return _dt; }
 	int numberPlayer(int x=-1){if(x != -1) _numberPlayer = x; return _numberPlayer; }
+	int numberNps(int x=-1){if(x != -1) _numberNps = x; return _numberNps; }
 	void sc(int x){_sc[x] = _sc[x] + 1;}
 	int scPrint(int x){return _sc[x];}
 	void valPlayer(int x){_numberPlayer = x;}

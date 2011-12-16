@@ -44,7 +44,7 @@ public:
 	int height(){ return _height; }
 	int width(){ return _width; }
 	int dt(){ return _dt; }
-	int numberPlayer(){ return _numberPlayer; }
+	int numberPlayer(int x=-1){if(x != -1) _numberPlayer = x; return _numberPlayer; }
 	void sc(int x){_sc[x] = _sc[x] + 1;}
 	int scPrint(int x){return _sc[x];}
 	void valPlayer(int x){_numberPlayer = x;}

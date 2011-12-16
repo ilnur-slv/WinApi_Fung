@@ -4,6 +4,13 @@
 #include "functions.h"
 using namespace std;
 
+#define IDC_B1 (1234)
+#define IDC_B2 (1235)
+#define IDC_B3 (1236)
+#define IDC_B4 (1237)
+
+HWND hButton1, hButton2, hButton3, hButton4;
+
 LRESULT CALLBACK MyWindowFunction(HWND,UINT,WPARAM,LPARAM);
 
 int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int nWinMode){
@@ -42,7 +49,19 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int
 		NULL
 		);
 
-	ShowWindow(hwnd,nWinMode);
+	hButton1 = CreateWindow("BUTTON", "Repaint", WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+	350, 200, 100, 24, hwnd, (HMENU)IDC_B1, NULL, NULL);
+
+	hButton1 = CreateWindow("BUTTON", "Repaint", WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+	350, 250, 100, 24, hwnd, (HMENU)IDC_B2, NULL, NULL);
+
+	hButton1 = CreateWindow("BUTTON", "Repaint", WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+	350, 300, 100, 24, hwnd, (HMENU)IDC_B3, NULL, NULL);
+
+	hButton1 = CreateWindow("BUTTON", "Repaint", WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_DEFPUSHBUTTON,
+	350, 350, 100, 24, hwnd, (HMENU)IDC_B4, NULL, NULL);
+
+	ShowWindow(hwnd,SW_SHOW);
 	UpdateWindow(hwnd);
 
 	MSG msg;
@@ -57,6 +76,15 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int
 
 LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lParam){
 	switch(message){
+		case WM_COMMAND:
+			{
+				int idButton = (int) LOWORD(wParam); // идентификатор, который указан в CreateWindowEx
+				if(idButton == IDC_B1)
+				{
+					Window.menu(0);
+				}
+				break;
+			}
 		case WM_DESTROY:
 			{
 				PostQuitMessage(0);
@@ -65,19 +93,22 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 		case BN_CLICKED:
 			break;
 		case WM_PAINT:
-			hdc=BeginPaint(hwnd, &ps);
-			
-
-			hdcMem = CreateCompatibleDC(hdc);
-			hbmMem = CreateCompatibleBitmap(hdc,Window.width(), Window.height());
-			hOld   = SelectObject(hdcMem, hbmMem);
-			hBrush=CreateSolidBrush(RGB(0,0,0));
-		    SelectObject(hdcMem,hBrush);
-			Rectangle(hdcMem,0,0,Window.width(), Window.height());
-
 			//--Рисуем игру--
-			if(GetAsyncKeyState('S')){Window.menu((Window.menu()==1)?0:1);Sleep(100);}
+			if(GetAsyncKeyState(27)){
+				Window.menu((Window.menu()==1)?0:1);
+				if(Window.menu() == 0) UpdateWindow(hwnd);
+			}
 			if(Window.menu() == 0){
+
+				hdc=BeginPaint(hwnd, &ps);
+				hdcMem = CreateCompatibleDC(hdc);
+				hbmMem = CreateCompatibleBitmap(hdc,Window.width(), Window.height());
+				hOld   = SelectObject(hdcMem, hbmMem);
+				hBrush=CreateSolidBrush(RGB(0,0,0));
+				SelectObject(hdcMem,hBrush);
+			
+				Rectangle(hdcMem,0,0,Window.width(), Window.height());
+
 				for(int i=0; i<Window.numberPlayer(); ++i)
 				{
 					Draw(player[i]);
@@ -85,18 +116,19 @@ LRESULT CALLBACK MyWindowFunction(HWND hwnd,UINT message,WPARAM wParam,LPARAM lP
 				}
 				nps->Draw();
 				Draw_Background();
+			
+				//---------------
+				BitBlt(hdc, 0, 0, Window.width(), Window.height(), hdcMem, 0, 0, SRCCOPY);
+
+				Sleep(Window.dt());
+
+				SelectObject(hdcMem, hOld);
+				DeleteObject(hbmMem);
+				DeleteDC(hdcMem);
+
+				InvalidateRect(hwnd,NULL,1);
+				EndPaint(hwnd, &ps);
 			}
-			//---------------
-			BitBlt(hdc, 0, 0, Window.width(), Window.height(), hdcMem, 0, 0, SRCCOPY);
-
-			Sleep(Window.dt());
-
-			SelectObject(hdcMem, hOld);
-			DeleteObject(hbmMem);
-			DeleteDC(hdcMem);
-
-			InvalidateRect(hwnd,NULL,1);
-			EndPaint(hwnd, &ps);
 			break;
 		default:
 			{
